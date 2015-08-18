@@ -18,9 +18,9 @@ def candidates
   JSON.parse(result, symbolize_names: true)
 end
 
-WikiData.ids_from_pages('lb', candidates.map { |c| c[:wikiname] }).each_with_index do |p, i|
+candidates.each_with_index do |title, i|
   puts i if (i % 50).zero?
-  data = WikiData::Fetcher.new(id: p.last).data('es') rescue nil
+  data = WikiData::Fetcher.new(title: title).data('es') rescue nil
   unless data
     warn "No data for #{p}"
     next
