@@ -22,7 +22,7 @@ candidates.each_with_index do |title, i|
   puts i if (i % 50).zero?
   data = WikiData::Fetcher.new(title: title).data('es') rescue nil
   unless data
-    warn "No data for #{p}"
+    warn "No data for #{title}"
     next
   end
   ScraperWiki.save_sqlite([:id], data)
