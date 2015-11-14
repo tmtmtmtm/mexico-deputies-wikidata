@@ -28,3 +28,5 @@ candidates.each_with_index do |title, i|
   ScraperWiki.save_sqlite([:id], data)
 end
 
+warn RestClient.post ENV['MORPH_REBUILDER_URL'], {} if ENV['MORPH_REBUILDER_URL']
+
