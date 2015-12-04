@@ -25,7 +25,6 @@ WikiData.ids_from_pages('es', members.map { |c| c[:wikiname] }).each_with_index 
     next
   end
   data[:original_wikiname] = p.first
-  warn data
   ScraperWiki.save_sqlite([:id], data)
 end
 
