@@ -8,7 +8,7 @@ require 'scraperwiki'
 require 'wikidata/fetcher'
 require 'mediawiki_api'
 
-def candidates
+def members
   morph_api_url = 'https://api.morph.io/tmtmtmtm/mexico-deputies-wikipedia/data.json'
   morph_api_key = ENV["MORPH_API_KEY"]
   result = RestClient.get morph_api_url, params: {
@@ -18,13 +18,14 @@ def candidates
   JSON.parse(result, symbolize_names: true)
 end
 
-candidates.each_with_index do |title, i|
-  puts i if (i % 50).zero?
-  data = WikiData::Fetcher.new(title: title).data('es') rescue nil
+WikiData.ids_from_pages('es', members.map { |c| c[:wikiname] }).each_with_index do |p, i|
+  data = WikiData::Fetcher.new(id: p.last).data('es') rescue nil
   unless data
-    warn "No data for #{title}"
+    warn "No data for #{p}"
     next
   end
+  data[:original_wikiname] = p.first
+  warn data
   ScraperWiki.save_sqlite([:id], data)
 end
 
