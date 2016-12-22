@@ -6,5 +6,3 @@ require 'wikidata/fetcher'
 
 names = EveryPolitician::Wikidata.morph_wikinames(source: 'tmtmtmtm/mexico-deputies-wikipedia', column: 'wikipedia__en')
 EveryPolitician::Wikidata.scrape_wikidata(names: { en: names })
-EveryPolitician::Wikidata.notify_rebuilder
-
