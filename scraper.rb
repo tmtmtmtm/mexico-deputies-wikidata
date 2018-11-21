@@ -14,4 +14,13 @@ en_names = EveryPolitician::Wikidata.wikipedia_xpath(
   xpath: '//table//tr[td]//td[position()=2 or position()=5]//a[not(@class="new")]/@title',
 )
 
-EveryPolitician::Wikidata.scrape_wikidata(names: { es: es_cat, en: en_names })
+query = <<SPARQL
+  SELECT DISTINCT ?item WHERE {
+    ?item p:P39 [ ps:P39 wd:Q18534310 ; pq:P2937 ?term ] .
+    ?term p:P31/pq:P1545 ?ordinal .
+    FILTER (xsd:integer(?ordinal) >= 62)
+  }
+SPARQL
+p39s = EveryPolitician::Wikidata.sparql(query)
+
+EveryPolitician::Wikidata.scrape_wikidata(ids: p39s, names: { es: es_cat, en: en_names })
